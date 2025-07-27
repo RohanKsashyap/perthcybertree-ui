@@ -134,14 +134,453 @@ export const DataProvider = ({ children }) => {
 
   const [founder] = useState(initialData.founder);
 
+  // CRUD Functions
+  const addService = useCallback(async (serviceData) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch('http://localhost:5000/api/services', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(serviceData)
+      });
+
+      if (response.ok) {
+        const newService = await response.json();
+        setServices(prev => [...prev, newService]);
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to add service",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while adding service",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const updateService = useCallback(async (id, updates) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/services/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updates)
+      });
+
+      if (response.ok) {
+        const updatedService = await response.json();
+        setServices(prev => prev.map(service => 
+          service._id === id ? updatedService : service
+        ));
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to update service",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while updating service",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const deleteService = useCallback(async (id) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/services/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        setServices(prev => prev.filter(service => service._id !== id));
+        toast({
+          title: "Success",
+          description: "Service deleted successfully"
+        });
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to delete service",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while deleting service",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const addProject = useCallback(async (projectData) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch('http://localhost:5000/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(projectData)
+      });
+
+      if (response.ok) {
+        const newProject = await response.json();
+        setProjects(prev => [...prev, newProject]);
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to add project",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while adding project",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const updateProject = useCallback(async (id, updates) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updates)
+      });
+
+      if (response.ok) {
+        const updatedProject = await response.json();
+        setProjects(prev => prev.map(project => 
+          project._id === id ? updatedProject : project
+        ));
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to update project",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while updating project",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const deleteProject = useCallback(async (id) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        setProjects(prev => prev.filter(project => project._id !== id));
+        toast({
+          title: "Success",
+          description: "Project deleted successfully"
+        });
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to delete project",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while deleting project",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const addEmployee = useCallback(async (employeeData) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch('http://localhost:5000/api/employees', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(employeeData)
+      });
+
+      if (response.ok) {
+        const newEmployee = await response.json();
+        setTeam(prev => [...prev, newEmployee]);
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to add employee",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while adding employee",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const updateEmployee = useCallback(async (id, updates) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updates)
+      });
+
+      if (response.ok) {
+        const updatedEmployee = await response.json();
+        setTeam(prev => prev.map(employee => 
+          employee._id === id ? updatedEmployee : employee
+        ));
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to update employee",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while updating employee",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
+  const deleteEmployee = useCallback(async (id) => {
+    try {
+      const userData = localStorage.getItem('cybertree_user');
+      if (!userData) {
+        toast({
+          title: "Error",
+          description: "Admin authentication required",
+          variant: "destructive"
+        });
+        return false;
+      }
+      
+      const { token } = JSON.parse(userData);
+      const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        setTeam(prev => prev.filter(employee => employee._id !== id));
+        toast({
+          title: "Success",
+          description: "Employee deleted successfully"
+        });
+        return true;
+      } else {
+        const error = await response.json();
+        toast({
+          title: "Error",
+          description: error.message || "Failed to delete employee",
+          variant: "destructive"
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Network error while deleting employee",
+        variant: "destructive"
+      });
+      return false;
+    }
+  }, []);
+
   useEffect(() => {
     // Function to fetch data without Authorization
-    const fetchData = (url) => {
-      return fetch(url)  // No headers required now
-        .then(res => res.ok ? res.json() : [])
-        .then(data => Array.isArray(data) ? data : [])
-        .catch(() => []);
+    const fetchData = async (url) => {
+      try {
+        console.log(`Fetching data from: ${url}`);
+        const response = await fetch(url);
+        console.log(`Response status: ${response.status}`);
+        
+        if (!response.ok) {
+          console.error(`Fetch error from ${url}:`, response.status, response.statusText);
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          return [];
+        }
+        
+        const data = await response.json();
+        console.log(`Data received from ${url}:`, data);
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        console.error(`Fetch error from ${url}:`, error);
+        return [];
+      }
     };
+
+    // Test server connection first
+    fetchData('http://localhost:5000/api/test')
+      .then(data => {
+        console.log('Server test response:', data);
+      })
+      .catch(error => {
+        console.error('Server test failed:', error);
+      });
 
     // Fetch services
     fetchData(API_ENDPOINTS.SERVICES)
@@ -213,6 +652,16 @@ export const DataProvider = ({ children }) => {
     founder,
     handleTestimonialSubmit,
     handleCaseStudySubmit,
+    // CRUD Functions
+    addService,
+    updateService,
+    deleteService,
+    addProject,
+    updateProject,
+    deleteProject,
+    addEmployee,
+    updateEmployee,
+    deleteEmployee,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

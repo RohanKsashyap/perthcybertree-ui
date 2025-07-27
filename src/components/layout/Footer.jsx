@@ -32,9 +32,9 @@ const Footer = () => {
           <div>
             <span className="text-white font-semibold mb-4 block">Company</span>
             <div className="space-y-2">
-              <p className="text-gray-400">About Us</p>
-              <p className="text-gray-400">Our Projects</p>
-              <p className="text-gray-400">Contact</p>
+              <Link to="/#about" className="text-gray-400 hover:text-cyan-400 transition-colors">About Us</Link>
+              <Link to="/#projects" className="text-gray-400 hover:text-cyan-400 transition-colors">Our Projects</Link>
+              <Link to="/#contact" className="text-gray-400 hover:text-cyan-400 transition-colors">Contact</Link>
             </div>
           </div>
 
@@ -48,10 +48,20 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-8 text-center">
-          <p className="text-gray-400">
-            © {new Date().getFullYear()} CyberTree. All rights reserved. Proudly expanding from India to Australia.
-          </p>
+        <div className="border-t border-white/10 mt-8 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className="text-gray-400">
+              © {new Date().getFullYear()} CyberTree. All rights reserved. Proudly expanding from India to Australia.
+            </p>
+            <div className="flex space-x-6">
+              <Link to="/privacy-policy" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-gray-400 hover:text-cyan-400 transition-colors">
+                Terms of Service
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
