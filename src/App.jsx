@@ -18,15 +18,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-<<<<<<< HEAD
-            <Route
-              path="/admin"
-=======
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />
-            <Route 
-              path="/admin" 
->>>>>>> b52c954ff83e08b3af9dd442c42d0d8051dc548e
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute>
                   <AdminPage />
