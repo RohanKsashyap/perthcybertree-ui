@@ -16,14 +16,16 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route 
-              path="/admin" 
+            <Route
+              path="/admin"
               element={
                 <ProtectedRoute>
                   <AdminPage />
                 </ProtectedRoute>
-              } 
+              }
             />
+            {/* Catch-all route for 404s - redirect to home */}
+            <Route path="*" element={<HomePage />} />
           </Routes>
         </Router>
         <Toaster />

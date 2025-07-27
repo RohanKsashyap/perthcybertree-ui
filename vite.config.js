@@ -217,6 +217,13 @@ export default defineConfig({
 				'@babel/generator',
 				'@babel/types'
 			]
-		}
+		},
+		// Ensure proper SPA routing support
+		outDir: 'dist',
+		assetsDir: 'assets',
+		// Generate source maps for debugging
+		sourcemap: false,
+		// Optimize for production
+		minify: 'terser'
 	}
 });

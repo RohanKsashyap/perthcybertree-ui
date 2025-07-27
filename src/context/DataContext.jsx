@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
+import { API_ENDPOINTS } from '../config/api';
 
 export const DataContext = createContext();
 
@@ -143,15 +144,15 @@ export const DataProvider = ({ children }) => {
     };
 
     // Fetch services
-    fetchData('http://localhost:5000/api/services')
+    fetchData(API_ENDPOINTS.SERVICES)
       .then(data => setServices(data));
 
     // Fetch projects
-    fetchData('http://localhost:5000/api/projects')
+    fetchData(API_ENDPOINTS.PROJECTS)
       .then(data => setProjects(data));
 
     // Fetch employees (team)
-    fetchData('http://localhost:5000/api/employees')
+    fetchData(API_ENDPOINTS.EMPLOYEES)
       .then(data => setTeam(data));
   }, []);
 
