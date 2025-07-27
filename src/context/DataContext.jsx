@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { toast } from '@/components/ui/use-toast';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS, getApiEndpointWithId } from '../config/api';
 
 export const DataContext = createContext();
 
@@ -148,7 +148,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch('http://localhost:5000/api/services', {
+      const response = await fetch(API_ENDPOINTS.SERVICES, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/services/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.SERVICES, id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/services/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.SERVICES, id), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -286,7 +286,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch('http://localhost:5000/api/projects', {
+      const response = await fetch(API_ENDPOINTS.PROJECTS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -331,7 +331,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.PROJECTS, id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -378,7 +378,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.PROJECTS, id), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -424,7 +424,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch('http://localhost:5000/api/employees', {
+      const response = await fetch(API_ENDPOINTS.EMPLOYEES, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -469,7 +469,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.EMPLOYEES, id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -516,7 +516,7 @@ export const DataProvider = ({ children }) => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/employees/${id}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.EMPLOYEES, id), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -553,34 +553,18 @@ export const DataProvider = ({ children }) => {
     // Function to fetch data without Authorization
     const fetchData = async (url) => {
       try {
-        console.log(`Fetching data from: ${url}`);
         const response = await fetch(url);
-        console.log(`Response status: ${response.status}`);
         
         if (!response.ok) {
-          console.error(`Fetch error from ${url}:`, response.status, response.statusText);
-          const errorText = await response.text();
-          console.error('Error response:', errorText);
           return [];
         }
         
         const data = await response.json();
-        console.log(`Data received from ${url}:`, data);
         return Array.isArray(data) ? data : [];
       } catch (error) {
-        console.error(`Fetch error from ${url}:`, error);
         return [];
       }
     };
-
-    // Test server connection first
-    fetchData('http://localhost:5000/api/test')
-      .then(data => {
-        console.log('Server test response:', data);
-      })
-      .catch(error => {
-        console.error('Server test failed:', error);
-      });
 
     // Fetch services
     fetchData(API_ENDPOINTS.SERVICES)

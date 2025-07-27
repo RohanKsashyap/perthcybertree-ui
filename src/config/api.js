@@ -33,6 +33,15 @@ export const API_ENDPOINTS = {
   SERVICES: getApiEndpoint('/api/services'),
   PROJECTS: getApiEndpoint('/api/projects'),
   EMPLOYEES: getApiEndpoint('/api/employees'),
+  
+  // Contact endpoints
+  CONTACTS: getApiEndpoint('/api/contacts'),
+  CONTACT_SUBMIT: getApiEndpoint('/api/contacts/submit'),
+};
+
+// Helper function to get endpoint with ID
+export const getApiEndpointWithId = (endpoint, id) => {
+  return `${endpoint}/${id}`;
 };
 
 // Export default configuration object

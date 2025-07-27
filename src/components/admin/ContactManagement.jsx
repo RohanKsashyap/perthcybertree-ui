@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS, getApiEndpointWithId } from '../../config/api';
 import { motion } from 'framer-motion';
 import { 
   Mail, 
@@ -55,7 +56,7 @@ const ContactManagement = () => {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/contacts', {
+      const response = await fetch(API_ENDPOINTS.CONTACTS, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -96,7 +97,7 @@ const ContactManagement = () => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/contacts/${contactId}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.CONTACTS, contactId), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ const ContactManagement = () => {
       }
       
       const { token } = JSON.parse(userData);
-      const response = await fetch(`http://localhost:5000/api/contacts/${contactId}`, {
+      const response = await fetch(getApiEndpointWithId(API_ENDPOINTS.CONTACTS, contactId), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

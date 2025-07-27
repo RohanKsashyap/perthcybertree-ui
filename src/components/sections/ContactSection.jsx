@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { API_ENDPOINTS } from '../../config/api';
 import { motion } from 'framer-motion';
 import { ArrowRight, Mail, Phone, MapPin, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/contacts/submit', {
+      const response = await fetch(API_ENDPOINTS.CONTACT_SUBMIT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
