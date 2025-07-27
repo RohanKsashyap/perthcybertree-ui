@@ -1,17 +1,70 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowRight, Mail, Phone, MapPin, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 
 const ContactSection = () => {
-  const handleContactClick = (e) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast({
-      title: "🚧 Contact form coming soon!",
-      description: "This feature isn't implemented yet—but don't worry! You can request it in your next prompt! 🚀"
-    });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/contacts/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "✅ Message sent successfully!",
+          description: data.message,
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        toast({
+          title: "❌ Error sending message",
+          description: data.message || 'Something went wrong. Please try again.',
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "❌ Network error",
+        description: "Unable to connect to server. Please check your connection and try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,12 +130,16 @@ const ContactSection = () => {
             viewport={{ once: true }}
             className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8"
           >
-            <form className="space-y-6" onSubmit={handleContactClick}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-white font-medium mb-2">Name</label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                     placeholder="Your name"
                   />
@@ -91,6 +148,10 @@ const ContactSection = () => {
                   <label className="block text-white font-medium mb-2">Email</label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
                     className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                     placeholder="your@email.com"
                   />
@@ -101,6 +162,10 @@ const ContactSection = () => {
                 <label className="block text-white font-medium mb-2">Subject</label>
                 <input
                   type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                   placeholder="Project inquiry"
                 />
@@ -110,6 +175,10 @@ const ContactSection = () => {
                 <label className="block text-white font-medium mb-2">Message</label>
                 <textarea
                   rows={4}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors resize-none"
                   placeholder="Tell us about your project..."
                 ></textarea>
@@ -117,10 +186,20 @@ const ContactSection = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white py-3 rounded-lg font-medium"
+                disabled={isSubmitting}
+                className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
-                <ArrowRight className="ml-2 w-5 h-5" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </>
+                )}
               </Button>
             </form>
           </motion.div>

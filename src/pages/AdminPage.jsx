@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AddServiceForm } from '@/components/admin/AddServiceForm';
 import { AddProjectForm } from '@/components/admin/AddProjectForm';
 import { AddEmployeeForm } from '@/components/admin/AddEmployeeForm';
+import ContactManagement from '@/components/admin/ContactManagement';
 import { DataContext } from '@/context/DataContext';
 import { AuthContext } from '@/context/AuthContext';
 import { useEffect } from 'react';
@@ -15,6 +16,7 @@ import { toast } from '@/components/ui/use-toast';
 
 const AdminPage = () => {
   const [openDialog, setOpenDialog] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
   // Edit modal state
   const [editItem, setEditItem] = useState(null);
   const { services, projects, team, addService, addProject, addEmployee, deleteProject, updateProject, deleteService, updateService, deleteEmployee, updateEmployee } = useContext(DataContext);
@@ -84,8 +86,35 @@ const AdminPage = () => {
             </div>
           </motion.div>
 
-          {/* Add forms */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {/* Navigation Tabs */}
+          <div className="flex space-x-1 mb-8 bg-white/5 rounded-lg p-1">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'overview'
+                  ? 'bg-cyan-500 text-white'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('contacts')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'contacts'
+                  ? 'bg-cyan-500 text-white'
+                  : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              Contact Management
+            </button>
+          </div>
+
+          {/* Overview Tab */}
+          {activeTab === 'overview' && (
+            <>
+              {/* Add forms */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {adminCards.map((card, index) => (
               <Dialog key={card.title} open={openDialog === card.dialog} onOpenChange={(isOpen) => !isOpen && setOpenDialog(null)}>
                 <DialogTrigger asChild>
@@ -169,6 +198,13 @@ const AdminPage = () => {
               ))}
             </ul>
           </section>
+            </>
+          )}
+
+          {/* Contact Management Tab */}
+          {activeTab === 'contacts' && (
+            <ContactManagement />
+          )}
 
           {/* Edit Modal */}
           {editItem && (

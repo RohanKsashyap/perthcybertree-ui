@@ -11,6 +11,10 @@ import CertificationsPartnershipsSection from '@/components/sections/Certificati
 import IndustriesSection from '@/components/sections/IndustriesSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ContactSection from '@/components/sections/ContactSection';
+import FAQSection from '@/components/sections/FAQSection';
+import PricingSection from '@/components/sections/PricingSection';
+import PricingCalculator from '@/components/sections/PricingCalculator';
+import TeamAvailabilitySection from '@/components/sections/TeamAvailabilitySection';
 import CyberAlertBanner from '@/components/layout/CyberAlertBanner';
 import FloatingCTA from '@/components/FloatingCTA';
 
@@ -28,12 +32,16 @@ const HomePage = () => {
         <main>
           <HeroSection />
           <ServicesSection />
+          <PricingSection />
+          <PricingCalculator />
+          <TeamAvailabilitySection />
           <ProjectsSection />
           <TestimonialsSection />
           <CaseStudiesSection />
           <CertificationsPartnershipsSection />
           <IndustriesSection />
           <AboutSection />
+          <FAQSection />
           <ContactSection />
         </main>
         <Footer />
